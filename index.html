@@ -27,7 +27,6 @@
       --border-color: #E2E8F0;
     }
 
-    /* Perbaikan Selector Reset (*) */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -213,7 +212,7 @@
       flex-direction: column;
       justify-content: center;
       width: 100%;
-      min-width: 0; /* Mencegah overflow flex/grid */
+      min-width: 0;
     }
 
     .search-input-wrapper {
@@ -247,22 +246,18 @@
       box-shadow: 0 0 0 3px rgba(0, 82, 156, 0.1);
     }
 
-    /* Filter Pills */
+    /* Filter Pills - Grid 3 Kolom Proporsional */
     .filter-pills {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 2px;
-      scrollbar-width: none;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
       width: 100%;
     }
 
-    .filter-pills::-webkit-scrollbar { display: none; }
-
     .pill-btn {
-      padding: 8px 16px;
+      padding: 8px 4px;
       border-radius: 20px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       border: 1px solid var(--border-color);
       background: #FFFFFF;
@@ -270,7 +265,11 @@
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s ease;
-      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      width: 100%;
     }
 
     .pill-btn.active {
@@ -291,7 +290,7 @@
       justify-content: space-between;
     }
 
-    /* Accordion List (Misi Items Grid) */
+    /* Accordion List */
     .misi-list {
       display: grid;
       grid-template-columns: 1fr;
@@ -535,7 +534,6 @@
         padding: 0 36px;
       }
 
-      /* Grid 2 Kolom presisi minmax(0, 1fr) */
       .top-info-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -601,7 +599,7 @@
     <!-- Main Content Area -->
     <div class="content-section">
 
-      <!-- Grid Info Section (Visi & Search Side-by-side pada PC) -->
+      <!-- Grid Info Section -->
       <div class="top-info-grid">
         <!-- Visi Card -->
         <div class="visi-card">
@@ -622,7 +620,7 @@
 
           <div class="filter-pills">
             <button class="pill-btn active" onclick="setFilter('all', this)">Semua (11)</button>
-            <button class="pill-btn" onclick="setFilter('realized', this)"><i class="fa-solid fa-circle-check" style="color: var(--bri-green);"></i> Terealisasi (6)</button>
+            <button class="pill-btn" onclick="setFilter('realized', this)"><i class="fa-solid fa-circle-check" style="color: var(--bri-green);"></i> Selesai (6)</button>
             <button class="pill-btn" onclick="setFilter('pending', this)"><i class="fa-solid fa-clock" style="color: var(--bri-accent-orange);"></i> Rencana (5)</button>
           </div>
         </div>
@@ -900,11 +898,10 @@
       parentCard.classList.toggle('active');
     }
 
-    // Category Filter (Semua / Terealisasi / Rencana)
+    // Category Filter
     function setFilter(filterType, btnElem) {
       currentFilter = filterType;
       
-      // Highlight Active Pill
       document.querySelectorAll('.pill-btn').forEach(btn => btn.classList.remove('active'));
       btnElem.classList.add('active');
 
@@ -935,7 +932,6 @@
           }
         });
 
-        // Hide Misi Card if no program matches
         if (visibleCount > 0) {
           misi.style.display = 'block';
           if (searchVal.length > 0) {
