@@ -27,6 +27,7 @@
       --border-color: #E2E8F0;
     }
 
+    /* Perbaikan Selector Reset (*) */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -155,21 +156,23 @@
     /* Content Area Layout */
     .content-section {
       padding: 0 16px;
+      width: 100%;
     }
 
-    /* Grid Layout untuk PC Section Visi & Filter */
+    /* Grid Layout untuk Visi & Filter */
     .top-info-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 16px;
       margin-bottom: 20px;
+      width: 100%;
     }
 
     /* Visi Banner */
     .visi-card {
       background: linear-gradient(135deg, #003865 0%, #00529C 100%);
       border-radius: 16px;
-      padding: 20px;
+      padding: 18px 20px;
       color: white;
       position: relative;
       overflow: hidden;
@@ -177,6 +180,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      width: 100%;
     }
 
     .visi-header {
@@ -208,11 +212,14 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      width: 100%;
+      min-width: 0; /* Mencegah overflow flex/grid */
     }
 
     .search-input-wrapper {
       position: relative;
       margin-bottom: 12px;
+      width: 100%;
     }
 
     .search-input-wrapper i {
@@ -247,6 +254,7 @@
       overflow-x: auto;
       padding-bottom: 2px;
       scrollbar-width: none;
+      width: 100%;
     }
 
     .filter-pills::-webkit-scrollbar { display: none; }
@@ -262,6 +270,7 @@
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s ease;
+      flex-shrink: 0;
     }
 
     .pill-btn.active {
@@ -288,6 +297,7 @@
       grid-template-columns: 1fr;
       gap: 14px;
       align-items: start;
+      width: 100%;
     }
 
     .misi-card-item {
@@ -297,6 +307,7 @@
       overflow: hidden;
       transition: all 0.25s ease;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      width: 100%;
     }
 
     .misi-card-header {
@@ -480,11 +491,7 @@
       margin-bottom: 4px;
     }
 
-    /* =========================================================
-       RESPONSIVE MEDIA QUERIES (DESKTOP & TABLET ADAPTATION)
-    ========================================================= */
-
-    /* Tablet & Desktop (Lebar Layar > 768px) */
+    /* RESPONSIVE MEDIA QUERIES */
     @media (min-width: 768px) {
       body {
         padding: 30px 20px;
@@ -525,26 +532,24 @@
       }
 
       .content-section {
-        padding: 0 20px;
+        padding: 0 36px;
       }
 
-      /* 2 Kolom untuk Visi & Filter pada PC */
+      /* Grid 2 Kolom presisi minmax(0, 1fr) */
       .top-info-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .search-filter-box {
         margin-bottom: 0;
       }
 
-      /* 2 Kolom Grid untuk Misi Card pada PC */
       .misi-list {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 18px;
       }
     }
 
-    /* Large Desktop (Lebar Layar > 1200px) */
     @media (min-width: 1200px) {
       .app-container {
         max-width: 1140px;
@@ -561,7 +566,7 @@
       <div class="greeting-name">Sasaran dan Pencapaian</div>
     </div>
 
-    <!-- Floating Dashboard Summary Card (Responsive Layout) -->
+    <!-- Floating Dashboard Summary Card -->
     <div class="summary-card">
       <div class="summary-left-pane">
         <div class="summary-header">
@@ -629,7 +634,7 @@
         <span style="font-size: 11px; font-weight: 600; color: var(--bri-blue);">5 Misi Utama</span>
       </div>
 
-      <!-- Accordion Misi List (Grid 2 Kolom pada PC) -->
+      <!-- Accordion Misi List -->
       <div class="misi-list" id="misiContainer">
 
         <!-- Misi 1 -->
