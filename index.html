@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Program Kerja RT 09 - MySAPA Mobile</title>
+  
+  <!-- Font Awesome 6.5 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts: Plus Jakarta Sans & Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bri-navy: #002D58;
+      --bri-blue-dark: #003865;
+      --bri-blue: #00529C;
+      --bri-blue-light: #1072BA;
+      --bri-accent-orange: #FF6B00;
+      --bri-orange-soft: #FFF2EA;
+      --bri-green: #10B981;
+      --bri-green-soft: #E6F4EA;
+      --bg-canvas: #F2F5F9;
+      --card-bg: #FFFFFF;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* Base Container (Mobile First) */
+    .app-container {
+      width: 100%;
+      max-width: 100%;
+      background: var(--bg-canvas);
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: 30px;
+      transition: all 0.3s ease;
+    }
+
+    /* Top Navigation Header */
+    .app-header {
+      background: linear-gradient(135deg, var(--bri-navy) 0%, var(--bri-blue) 100%);
+      color: white;
+      padding: 24px 20px 75px 20px;
+      border-radius: 0 0 28px 28px;
+      position: relative;
+    }
+
+    .greeting-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* Floating Summary Card */
+    .summary-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 20px;
+      margin: -55px 16px 20px 16px;
+      box-shadow: 0 10px 25px rgba(0, 56, 101, 0.08);
+      position: relative;
+      z-index: 10;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .summary-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .summary-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .summary-percentage {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--bri-blue);
+      background: rgba(0, 82, 156, 0.08);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 10px;
+      background: #E2E8F0;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 55%;
+      background: linear-gradient(90deg, var(--bri-blue) 0%, var(--bri-accent-orange) 100%);
+      border-radius: 10px;
+      transition: width 0.8s ease;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+      padding-top: 14px;
+    }
+
+    .stat-item .stat-num {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--bri-navy);
+    }
+
+    .stat-item .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .stat-realized { color: var(--bri-green) !important; }
+    .stat-pending { color: var(--bri-accent-orange) !important; }
+
+    /* Content Area Layout */
+    .content-section {
+      padding: 0 16px;
+    }
+
+    /* Grid Layout untuk PC Section Visi & Filter */
+    .top-info-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    /* Visi Banner */
+    .visi-card {
+      background: linear-gradient(135deg, #003865 0%, #00529C 100%);
+      border-radius: 16px;
+      padding: 18px 20px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0, 56, 101, 0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .visi-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #FFB37C;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .visi-text {
+      font-size: 13px;
+      line-height: 1.55;
+      opacity: 0.95;
+      font-weight: 500;
+    }
+
+    /* Search & Filter Controls */
+    .search-filter-box {
+      background: #FFFFFF;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .search-input-wrapper i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 14px 12px 40px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      background: #FFFFFF;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--bri-blue);
+      box-shadow: 0 0 0 3px rgba(0, 82, 156, 0.1);
+    }
+
+    /* Filter Pills */
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+
+    .filter-pills::-webkit-scrollbar { display: none; }
+
+    .pill-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      background: #FFFFFF;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .pill-btn.active {
+      background: var(--bri-blue);
+      color: white;
+      border-color: var(--bri-blue);
+      box-shadow: 0 4px 10px rgba(0, 82, 156, 0.2);
+    }
+
+    /* Section Title */
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--bri-navy);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Accordion List (Misi Items Grid) */
+    .misi-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .misi-card-item {
+      background: #FFFFFF;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .misi-card-header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      background: #FFFFFF;
+      transition: background 0.2s;
+    }
+
+    .misi-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      padding-right: 10px;
+    }
+
+    .misi-icon-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(0, 82, 156, 0.06);
+      color: var(--bri-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .misi-text-box h2 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.35;
+    }
+
+    .misi-text-box span {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 2px;
+      display: block;
+    }
+
+    .toggle-arrow {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--bg-canvas);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    /* Accordion Body */
+    .misi-card-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      background: #FAFAFA;
+      border-top: 1px solid transparent;
+    }
+
+    .program-inner-list {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Program Item Box */
+    .program-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .program-left-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .program-num-tag {
+      background: var(--bri-blue);
+      color: white;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      margin-top: 1px;
+      flex-shrink: 0;
+    }
+
+    .program-title-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.45;
+    }
+
+    /* Status Badges */
+    .status-pill {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .status-realized {
+      background: var(--bri-green-soft);
+      color: #067A4B;
+      border: 1px solid #B7EBC9;
+    }
+
+    .status-pending {
+      background: var(--bri-orange-soft);
+      color: var(--bri-accent-orange);
+      border: 1px solid #FFD8C2;
+    }
+
+    /* Active State */
+    .misi-card-item.active {
+      border-color: var(--bri-blue);
+      box-shadow: 0 4px 16px rgba(0, 82, 156, 0.08);
+    }
+
+    .misi-card-item.active .misi-card-header {
+      background: #F8FAFC;
+    }
+
+    .misi-card-item.active .misi-icon-badge {
+      background: var(--bri-blue);
+      color: white;
+    }
+
+    .misi-card-item.active .toggle-arrow {
+      transform: rotate(180deg);
+      background: var(--bri-blue);
+      color: white;
+    }
+
+    .misi-card-item.active .misi-card-body {
+      max-height: 800px;
+      border-top-color: var(--border-color);
+    }
+
+    /* Footer */
+    .app-footer {
+      text-align: center;
+      padding: 30px 16px 10px 16px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: var(--bri-navy);
+      margin-bottom: 4px;
+    }
+
+    /* =========================================================
+       RESPONSIVE MEDIA QUERIES (DESKTOP & TABLET ADAPTATION)
+    ========================================================= */
+
+    /* Tablet & Desktop (Lebar Layar > 768px) */
+    @media (min-width: 768px) {
+      body {
+        padding: 30px 20px;
+      }
+
+      .app-container {
+        max-width: 1080px;
+        border-radius: 24px;
+        box-shadow: 0 15px 35px rgba(0, 56, 101, 0.08);
+        overflow: hidden;
+      }
+
+      .app-header {
+        padding: 32px 36px 90px 36px;
+        border-radius: 24px 24px 0 0;
+      }
+
+      .summary-card {
+        margin: -60px 36px 24px 36px;
+        padding: 24px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+      }
+
+      .summary-left-pane {
+        flex: 1;
+      }
+
+      .summary-grid {
+        border-top: none;
+        border-left: 1px solid var(--border-color);
+        padding-top: 0;
+        padding-left: 30px;
+        gap: 20px;
+        min-width: 380px;
+      }
+
+      .content-section {
+        padding: 0 36px;
+      }
+
+      /* 2 Kolom untuk Visi & Filter pada PC */
+      .top-info-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .search-filter-box {
+        margin-bottom: 0;
+      }
+
+      /* 2 Kolom Grid untuk Misi Card pada PC */
+      .misi-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+      }
+    }
+
+    /* Large Desktop (Lebar Layar > 1200px) */
+    @media (min-width: 1200px) {
+      .app-container {
+        max-width: 1140px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Top Header Banner -->
+    <div class="app-header">
+      <div class="greeting-name">Sasaran dan Pencapaian</div>
+    </div>
+
+    <!-- Floating Dashboard Summary Card (Responsive Layout) -->
+    <div class="summary-card">
+      <div class="summary-left-pane">
+        <div class="summary-header">
+          <div class="summary-title">
+            <i class="fa-solid fa-chart-pie" style="color: var(--bri-blue);"></i> Capaian Program
+          </div>
+          <div class="summary-percentage">55% Selesai</div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="progress-bar-container" style="margin-bottom: 0;">
+          <div class="progress-bar-fill" id="mainProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Grid Stat Summary -->
+      <div class="summary-grid">
+        <div class="stat-item">
+          <div class="stat-num">11</div>
+          <div class="stat-label">Total Program</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num stat-realized">6</div>
+          <div class="stat-label">Terealisasi</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num stat-pending">5</div>
+          <div class="stat-label">Rencana</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content-section">
+
+      <!-- Grid Info Section (Visi & Search Side-by-side pada PC) -->
+      <div class="top-info-grid">
+        <!-- Visi Card -->
+        <div class="visi-card">
+          <div class="visi-header">
+            <i class="fa-solid fa-bullseye"></i> Visi Utama RT 09
+          </div>
+          <div class="visi-text">
+            “Terwujudnya RT yang unggul dalam pelayanan, nyaman, berkelanjutan, dan tangguh terhadap tantangan lingkungan.”
+          </div>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="search-filter-box">
+          <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="Cari program kerja RT..." onkeyup="filterPrograms()">
+          </div>
+
+          <div class="filter-pills">
+            <button class="pill-btn active" onclick="setFilter('all', this)">Semua (11)</button>
+            <button class="pill-btn" onclick="setFilter('realized', this)"><i class="fa-solid fa-circle-check" style="color: var(--bri-green);"></i> Terealisasi (6)</button>
+            <button class="pill-btn" onclick="setFilter('pending', this)"><i class="fa-solid fa-clock" style="color: var(--bri-accent-orange);"></i> Rencana (5)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Heading -->
+      <div class="section-title">
+        <span>Daftar Misi & Program</span>
+        <span style="font-size: 11px; font-weight: 600; color: var(--bri-blue);">5 Misi Utama</span>
+      </div>
+
+      <!-- Accordion Misi List (Grid 2 Kolom pada PC) -->
+      <div class="misi-list" id="misiContainer">
+
+        <!-- Misi 1 -->
+        <div class="misi-card-item">
+          <div class="misi-card-header" onclick="toggleAccordion(this)">
+            <div class="misi-title-group">
+              <div class="misi-icon-badge">
+                <i class="fa-solid fa-laptop-code"></i>
+              </div>
+              <div class="misi-text-box">
+                <h2>Sistem Pelayanan Berbasis Digital</h2>
+                <span>1 Program • 100% Terealisasi</span>
+              </div>
+            </div>
+            <div class="toggle-arrow">
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="misi-card-body">
+            <div class="program-inner-list">
+              <div class="program-box" data-status="realized">
+                <div class="program-left-content">
+                  <span class="program-num-tag">1.1</span>
+                  <div class="program-title-text">Menciptakan Aplikasi Sistem Informasi dan Pelayanan Administrasi (MySAPA)</div>
+                </div>
+                <span class="status-pill status-realized">
+                  <i class="fa-solid fa-circle-check"></i> Terealisasi
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Misi 2 -->
+        <div class="misi-card-item">
+          <div class="misi-card-header" onclick="toggleAccordion(this)">
+            <div class="misi-title-group">
+              <div class="misi-icon-badge">
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+              </div>
+              <div class="misi-text-box">
+                <h2>Peningkatan Mutu Prasarana Umum</h2>
+                <span>1 Program • 100% Terealisasi</span>
+              </div>
+            </div>
+            <div class="toggle-arrow">
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="misi-card-body">
+            <div class="program-inner-list">
+              <div class="program-box" data-status="realized">
+                <div class="program-left-content">
+                  <span class="program-num-tag">2.1</span>
+                  <div class="program-title-text">Renovasi Poskamling menjadi Balai SAPA Terpadu</div>
+                </div>
+                <span class="status-pill status-realized">
+                  <i class="fa-solid fa-circle-check"></i> Terealisasi
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Misi 3 -->
+        <div class="misi-card-item">
+          <div class="misi-card-header" onclick="toggleAccordion(this)">
+            <div class="misi-title-group">
+              <div class="misi-icon-badge">
+                <i class="fa-solid fa-building-circle-check"></i>
+              </div>
+              <div class="misi-text-box">
+                <h2>Pembangunan Sarana Umum</h2>
+                <span>4 Program • 25% Terealisasi</span>
+              </div>
+            </div>
+            <div class="toggle-arrow">
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="misi-card-body">
+            <div class="program-inner-list">
+
+              <div class="program-box" data-status="pending">
+                <div class="program-left-content">
+                  <span class="program-num-tag">3.1</span>
+                  <div class="program-title-text">Pembangunan SAPA Kreatif untuk Ruang Terbuka Hijau (RTH)</div>
+                </div>
+                <span class="status-pill status-pending">
+                  <i class="fa-solid fa-clock"></i> Rencana
+                </span>
+              </div>
+
+              <div class="program-box" data-status="realized">
+                <div class="program-left-content">
+                  <span class="program-num-tag">3.2</span>
+                  <div class="program-title-text">Pemeliharaan rutin lampu penerang jalan</div>
+                </div>
+                <span class="status-pill status-realized">
+                  <i class="fa-solid fa-circle-check"></i> Terealisasi
+                </span>
+              </div>
+
+              <div class="program-box" data-status="pending">
+                <div class="program-left-content">
+                  <span class="program-num-tag">3.3</span>
+                  <div class="program-title-text">Penambahan titik baru lampu penerang jalan</div>
+                </div>
+                <span class="status-pill status-pending">
+                  <i class="fa-solid fa-clock"></i> Rencana
+                </span>
+              </div>
+
+              <div class="program-box" data-status="pending">
+                <div class="program-left-content">
+                  <span class="program-num-tag">3.4</span>
+                  <div class="program-title-text">Pembuatan trotoar dan sarana rehat publik</div>
+                </div>
+                <span class="status-pill status-pending">
+                  <i class="fa-solid fa-clock"></i> Rencana
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Misi 4 -->
+        <div class="misi-card-item">
+          <div class="misi-card-header" onclick="toggleAccordion(this)">
+            <div class="misi-title-group">
+              <div class="misi-icon-badge">
+                <i class="fa-solid fa-people-group"></i>
+              </div>
+              <div class="misi-text-box">
+                <h2>Pemberdayaan Masyarakat</h2>
+                <span>4 Program • 75% Terealisasi</span>
+              </div>
+            </div>
+            <div class="toggle-arrow">
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="misi-card-body">
+            <div class="program-inner-list">
+
+              <div class="program-box" data-status="realized">
+                <div class="program-left-content">
+                  <span class="program-num-tag">4.1</span>
+                  <div class="program-title-text">Fasilitasi lapak takjil Ramadhan bagi UMKM warga</div>
+                </div>
+                <span class="status-pill status-realized">
+                  <i class="fa-solid fa-circle-check"></i> Terealisasi
+                </span>
+              </div>
+
+              <div class="program-box" data-status="realized">
+                <div class="program-left-content">
+                  <span class="program-num-tag">4.2</span>
+                  <div class="program-title-text">Pemeriksaan kesehatan gratis berkala</div>
+                </div>
+                <span class="status-pill status-realized">
+                  <i class="fa-solid fa-circle-check"></i> Terealisasi
+                </span>
+              </div>
+
+              <div class="program-box" data-status="pending">
+                <div class="program-left-content">
+                  <span class="program-num-tag">4.3</span>
+                  <div class="program-title-text">Kegiatan senam sehat bersama warga</div>
+                </div>
+                <span class="status-pill status-pending">
+                  <i class="fa-solid fa-clock"></i> Rencana
+                </span>
+              </div>
+
+              <div class="program-box" data-status="realized">
+                <div class="program-left-content">
+                  <span class="program-num-tag">4.4</span>
+                  <div class="program-title-text">Pembentukan & operasional Satgas Keamanan dan Kebersihan</div>
+                </div>
+                <span class="status-pill status-realized">
+                  <i class="fa-solid fa-circle-check"></i> Terealisasi
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Misi 5 -->
+        <div class="misi-card-item">
+          <div class="misi-card-header" onclick="toggleAccordion(this)">
+            <div class="misi-title-group">
+              <div class="misi-icon-badge">
+                <i class="fa-solid fa-house-flood-water"></i>
+              </div>
+              <div class="misi-text-box">
+                <h2>Mitigasi Penanganan Banjir</h2>
+                <span>2 Program • 0% Terealisasi</span>
+              </div>
+            </div>
+            <div class="toggle-arrow">
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
+          <div class="misi-card-body">
+            <div class="program-inner-list">
+
+              <div class="program-box" data-status="pending">
+                <div class="program-left-content">
+                  <span class="program-num-tag">5.1</span>
+                  <div class="program-title-text">Perbaikan dan normalisasi saluran drainase</div>
+                </div>
+                <span class="status-pill status-pending">
+                  <i class="fa-solid fa-clock"></i> Rencana
+                </span>
+              </div>
+
+              <div class="program-box" data-status="pending">
+                <div class="program-left-content">
+                  <span class="program-num-tag">5.2</span>
+                  <div class="program-title-text">Peninggian talud di bagian hilir wilayah RT</div>
+                </div>
+                <span class="status-pill status-pending">
+                  <i class="fa-solid fa-clock"></i> Rencana
+                </span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- App Footer -->
+    <div class="app-footer">
+      <div class="footer-logo">
+        <i class="fa-solid fa-shield-halved" style="color: var(--bri-blue);"></i> SAPA RT 09
+      </div>
+      <div>Sistem Informasi & Pelayanan Administrasi RT</div>
+      <div style="margin-top: 4px; opacity: 0.7;">Powered by Anto Design Concept &copy; 2026</div>
+    </div>
+
+  </div>
+
+  <script>
+    let currentFilter = 'all';
+
+    // Accordion Toggle
+    function toggleAccordion(headerElem) {
+      const parentCard = headerElem.parentElement;
+      const allCards = document.querySelectorAll('.misi-card-item');
+
+      allCards.forEach(card => {
+        if (card !== parentCard) {
+          card.classList.remove('active');
+        }
+      });
+
+      parentCard.classList.toggle('active');
+    }
+
+    // Category Filter (Semua / Terealisasi / Rencana)
+    function setFilter(filterType, btnElem) {
+      currentFilter = filterType;
+      
+      // Highlight Active Pill
+      document.querySelectorAll('.pill-btn').forEach(btn => btn.classList.remove('active'));
+      btnElem.classList.add('active');
+
+      filterPrograms();
+    }
+
+    // Filter Logic for Search & Category
+    function filterPrograms() {
+      const searchVal = document.getElementById('searchInput').value.toLowerCase();
+      const misiCards = document.querySelectorAll('.misi-card-item');
+
+      misiCards.forEach(misi => {
+        const programItems = misi.querySelectorAll('.program-box');
+        let visibleCount = 0;
+
+        programItems.forEach(item => {
+          const text = item.querySelector('.program-title-text').innerText.toLowerCase();
+          const status = item.getAttribute('data-status');
+
+          const matchesSearch = text.includes(searchVal);
+          const matchesFilter = (currentFilter === 'all') || (currentFilter === status);
+
+          if (matchesSearch && matchesFilter) {
+            item.style.display = 'flex';
+            visibleCount++;
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        // Hide Misi Card if no program matches
+        if (visibleCount > 0) {
+          misi.style.display = 'block';
+          if (searchVal.length > 0) {
+            misi.classList.add('active');
+          }
+        } else {
+          misi.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
